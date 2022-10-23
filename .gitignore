@@ -2,5 +2,20 @@ node_modules
 
 /.cache
 /build
-/public/build
+/public/static
+/server/build
 .env
+*.log
+
+# Compiled files
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+
+# Directories
+.terraform/
+.vagrant/
+
+# Ignored Terraform files
+*gitignore*.tf
+
