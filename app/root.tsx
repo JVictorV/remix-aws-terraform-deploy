@@ -6,12 +6,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
 } from '@remix-run/react';
 import type { ReactNode } from 'react';
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
-  title: 'New Remix App',
+  title: 'Remix deploy with terraform on aws',
   viewport: 'width=device-width,initial-scale=1',
 });
 
@@ -50,15 +51,25 @@ export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   console.error(error);
   return (
     <AppShell>
-      <head>
-        <title>Oh no!</title>
-      </head>
       <div>
         <h1>Ihh caralho deu ruim</h1>
         <p>{error.message}</p>
         <p>The stack trace is:</p>
         <pre>{error.stack}</pre>
       </div>
+    </AppShell>
+  );
+};
+
+export const CatchBoundary = () => {
+  const caught = useCatch();
+  console.log({ data: caught.data });
+  return (
+    <AppShell>
+      <h1>
+        {caught.status} - {caught.statusText}
+      </h1>
+      <img src={`https://http.cat/${caught.status}`} />
     </AppShell>
   );
 };
