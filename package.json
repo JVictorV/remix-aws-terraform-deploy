@@ -2,8 +2,9 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev",
+    "build:prod": "./clear.sh && remix build",
+    "build:local": "LOCAL=true remix build",
+    "dev": "LOCAL=true remix dev",
     "start": "remix-serve build"
   },
   "dependencies": {

@@ -9,13 +9,7 @@ export default function Index() {
   const { now, env } = useLoaderData<typeof loader>();
 
   return (
-    <div
-      style={{
-        fontFamily: 'system-ui, sans-serif',
-        lineHeight: '1.4',
-        fontSize: '24px',
-      }}
-    >
+    <div>
       <h1>Baile do jaca</h1>
       <span>ENV: {env}</span>
       <br />
