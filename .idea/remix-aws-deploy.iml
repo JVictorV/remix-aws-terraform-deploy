@@ -11,6 +11,7 @@
       <excludeFolder url="file://$MODULE_DIR$/infra/.terraform" />
       <excludeFolder url="file://$MODULE_DIR$/server/build" />
       <excludeFolder url="file://$MODULE_DIR$/public/static" />
+      <excludeFolder url="file://$MODULE_DIR$/infra/files" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

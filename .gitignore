@@ -15,6 +15,7 @@ node_modules
 # Directories
 .terraform/
 .vagrant/
+/infra/files
 
 # Ignored Terraform files
 *gitignore*.tf
