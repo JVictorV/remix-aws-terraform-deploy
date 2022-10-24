@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
+  useMatches,
 } from '@remix-run/react';
 import type { ReactNode } from 'react';
 
@@ -17,6 +18,9 @@ export const meta: MetaFunction = () => ({
 });
 
 function AppShell({ children }: { children: ReactNode }) {
+  const matches = useMatches();
+
+  console.log(matches);
   return (
     <html lang='en'>
       <head>

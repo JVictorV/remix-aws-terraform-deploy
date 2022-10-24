@@ -8,11 +8,6 @@ variable "bucket_name" {
   default = "code_bucket"
 }
 
-variable "frontend_bundle_name" {
-  type    = string
-  default = "frontend.zip"
-}
-
 variable "server_bundle_name" {
   type    = string
   default = "server.zip"
