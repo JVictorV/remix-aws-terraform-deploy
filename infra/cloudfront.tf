@@ -1,16 +1,15 @@
 locals {
-  s3_origin_id    = aws_s3_bucket.default.id
-  apigw_origin_id = aws_apigatewayv2_api.lambda_gateway.id
-  prod_url        = "prod.${data.aws_route53_zone.main_zone.name}"
+  s3_origin_id     = aws_s3_bucket.default.id
+  lambda_origin_id = aws_lambda_function.bff_server_lambda.id
+  cloudfront_url   = "${var.stage}.${data.aws_route53_zone.main_zone.name}"
 }
-
 
 resource "aws_cloudfront_origin_access_identity" "OAI" {}
 
 resource "aws_cloudfront_distribution" "frontend_distribution" {
   enabled     = true
   price_class = "PriceClass_All"
-  aliases     = [local.prod_url]
+  aliases     = [local.cloudfront_url]
 
   origin {
     origin_id   = local.s3_origin_id
@@ -22,9 +21,8 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
   }
 
   origin {
-    origin_id   = local.apigw_origin_id
-    domain_name = "${aws_apigatewayv2_stage.prod_stage.api_id}.execute-api.${data.aws_region.current.id}.amazonaws.com"
-    origin_path = "/${aws_apigatewayv2_stage.prod_stage.name}"
+    origin_id   = local.lambda_origin_id
+    domain_name = "${aws_lambda_function_url.bff_url.url_id}.lambda-url.${data.aws_region.current.id}.on.aws"
 
     custom_origin_config {
       http_port              = 80
@@ -37,7 +35,7 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = local.apigw_origin_id
+    target_origin_id = local.lambda_origin_id
 
     default_ttl = 0
     min_ttl     = 0
@@ -65,9 +63,9 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
     compress    = true
 
     forwarded_values {
-      query_string = false
+      query_string = true
       cookies {
-        forward = "none"
+        forward = "all"
       }
     }
 

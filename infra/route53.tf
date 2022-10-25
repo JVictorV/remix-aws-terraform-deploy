@@ -22,7 +22,7 @@ resource "aws_route53_record" "certificate_record" {
 }
 
 resource "aws_route53_record" "app_record" {
-  name    = "prod.${data.aws_route53_zone.main_zone.name}"
+  name    = "${var.stage}.${data.aws_route53_zone.main_zone.name}"
   type    = "A"
   zone_id = data.aws_route53_zone.main_zone.zone_id
 
@@ -32,3 +32,4 @@ resource "aws_route53_record" "app_record" {
     zone_id                = aws_cloudfront_distribution.frontend_distribution.hosted_zone_id
   }
 }
+

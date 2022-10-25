@@ -9,11 +9,7 @@ resource "aws_lambda_function" "bff_server_lambda" {
   runtime = "nodejs16.x"
 }
 
-resource "aws_lambda_permission" "api_gw" {
-  statement_id  = "AllowExecutionFromApiGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.bff_server_lambda.function_name
-  principal     = "apigateway.amazonaws.com"
-
-  source_arn = "${aws_apigatewayv2_api.lambda_gateway.execution_arn}/*/*/*"
+resource "aws_lambda_function_url" "bff_url" {
+  authorization_type = "NONE"
+  function_name      = aws_lambda_function.bff_server_lambda.function_name
 }

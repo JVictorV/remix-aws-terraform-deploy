@@ -12,3 +12,13 @@ variable "server_bundle_name" {
   type    = string
   default = "server.zip"
 }
+
+variable "stage" {
+  type    = string
+  default = "prod"
+}
+
+variable "bff_url" {
+  type    = string
+  default = "prod-bff"
+}
