@@ -9,7 +9,6 @@ resource "aws_s3_bucket_acl" "default_bucket_acl" {
   acl    = "public-read"
 }
 
-
 resource "aws_s3_object" "frontend_files" {
   for_each = module.template_files.files
 
@@ -22,9 +21,7 @@ resource "aws_s3_object" "frontend_files" {
   etag    = each.value.digests.md5
 }
 
-
 resource "aws_s3_bucket_policy" "access_s3_from_cloudfront_policy" {
   bucket = aws_s3_bucket.default.id
   policy = data.aws_iam_policy_document.allow_s3_access_from_cloudfront.json
 }
-
