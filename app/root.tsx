@@ -15,6 +15,7 @@ export const meta: MetaFunction = () => ({
   charset: 'utf-8',
   title: 'Remix deploy with terraform on aws',
   viewport: 'width=device-width,initial-scale=1',
+  description: 'A Remix application',
 });
 
 function AppShell({ children }: { children: ReactNode }) {
