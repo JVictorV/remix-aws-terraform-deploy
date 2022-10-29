@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda" {
-  name = "iam_for_lambda"
+  name = "iam-for-${var.environment}-lambda"
 
   assume_role_policy = jsonencode({
     Version : "2012-10-17",
@@ -16,7 +16,7 @@ resource "aws_iam_role" "lambda" {
 }
 
 resource "aws_iam_policy" "lambda_logging_policy" {
-  name = "lambda_logging_policy"
+  name   = "${var.environment}-lambda-logging-policy"
   policy = jsonencode({
     Version : "2012-10-17",
     Statement : [
@@ -52,8 +52,8 @@ data "aws_iam_policy_document" "allow_s3_access_from_cloudfront" {
     effect = "Allow"
 
     resources = [
-      aws_s3_bucket.default.arn,
-      "${aws_s3_bucket.default.arn}/*",
+      aws_s3_bucket.static_files.arn,
+      "${aws_s3_bucket.static_files.arn}/*",
     ]
   }
 }

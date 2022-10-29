@@ -1,7 +1,7 @@
 locals {
-  s3_origin_id     = aws_s3_bucket.default.id
+  s3_origin_id     = aws_s3_bucket.static_files.id
   lambda_origin_id = aws_lambda_function.bff_server_lambda.id
-  cloudfront_url   = "${var.stage}.${data.aws_route53_zone.main_zone.name}"
+  cloudfront_url   = "${var.environment}.${data.aws_route53_zone.main_zone.name}"
 }
 
 resource "aws_cloudfront_origin_access_identity" "OAI" {}
@@ -13,7 +13,7 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
 
   origin {
     origin_id   = local.s3_origin_id
-    domain_name = aws_s3_bucket.default.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.static_files.bucket_regional_domain_name
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.OAI.cloudfront_access_identity_path
@@ -79,7 +79,7 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.wildcard_certificate.arn
+    acm_certificate_arn = data.aws_acm_certificate.wildcard_certificate.arn
     ssl_support_method  = "sni-only"
   }
 }

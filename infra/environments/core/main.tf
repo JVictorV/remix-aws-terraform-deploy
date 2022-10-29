@@ -13,6 +13,22 @@ terraform {
   backend "s3" {
     bucket = "remix-aws-terraform"
     region = "us-east-1"
-    key    = "terraform.tfstate"
+    key    = "terraform-core.tfstate"
   }
+}
+
+
+provider "aws" {
+  region = "us-east-1"
+
+  default_tags {
+    tags = {
+      Owner       = "Terraform"
+      Environment = "Core"
+    }
+  }
+}
+
+module "core" {
+  source = "../../modules/shared"
 }
