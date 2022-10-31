@@ -1,5 +1,5 @@
 locals {
-  server_file_path = "../server/build/index.js"
+  server_file_path = "../../../server/build/index.js"
 }
 
 data "archive_file" "server_zip" {
