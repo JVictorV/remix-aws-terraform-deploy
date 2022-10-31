@@ -34,3 +34,7 @@ module "production" {
 
   environment = "production"
 }
+
+output "app_url" {
+  value = module.production.app_url
+}

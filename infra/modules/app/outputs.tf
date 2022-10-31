@@ -7,5 +7,5 @@ output "cloudfront_url" {
 }
 
 output "app_url" {
-  value = aws_route53_record.app_record.name
+  value = "https://${aws_route53_record.app_record.name}"
 }
