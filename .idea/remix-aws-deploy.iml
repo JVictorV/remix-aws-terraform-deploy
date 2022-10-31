@@ -12,6 +12,11 @@
       <excludeFolder url="file://$MODULE_DIR$/server/build" />
       <excludeFolder url="file://$MODULE_DIR$/public/static" />
       <excludeFolder url="file://$MODULE_DIR$/infra/files" />
+      <excludeFolder url="file://$MODULE_DIR$/infra/environments/core/.terraform" />
+      <excludeFolder url="file://$MODULE_DIR$/infra/environments/develop/.terraform" />
+      <excludeFolder url="file://$MODULE_DIR$/infra/environments/production/.terraform" />
+      <excludeFolder url="file://$MODULE_DIR$/infra/environments/staging/.terraform" />
+      <excludeFolder url="file://$MODULE_DIR$/infra/modules/app/.terraform" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
