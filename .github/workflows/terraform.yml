@@ -26,5 +26,6 @@ jobs:
       - name: Validate and Plan Terraform
         uses: ./.github/actions/validate-and-plan-terraform
         with:
+          dir: 'infra/environments/core'
           pr_env: 'Core'
           github_token: ${{ secrets.GITHUB_TOKEN }}
