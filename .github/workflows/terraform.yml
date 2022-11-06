@@ -23,7 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - id: foo
-        uses: actions/validate-and-plan-terraform@v1
+      - name: Validate and Plan Terraform
+        uses: ./.github/actions/validate-and-plan-terraform
         with:
           pr_env: 'Core'
