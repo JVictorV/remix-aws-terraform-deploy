@@ -9,7 +9,6 @@ runs:
   steps:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
-      shell: bash
 
     - name: Terraform Format
       id: fmt
@@ -37,7 +36,6 @@ runs:
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         PR_ENV: '${{ inputs.pr_env }}'
-      shell: bash
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -65,6 +63,6 @@ runs:
           })
 
     - name: Terraform Plan Status
+      shell: bash
       if: steps.plan.outcome == 'failure'
       run: exit 1
-      shell: bash
