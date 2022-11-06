@@ -27,3 +27,4 @@ jobs:
         uses: ./.github/actions/validate-and-plan-terraform
         with:
           pr_env: 'Core'
+          github_token: ${{ secrets.GITHUB_TOKEN }}

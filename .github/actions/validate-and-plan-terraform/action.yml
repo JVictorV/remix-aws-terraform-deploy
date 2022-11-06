@@ -4,6 +4,9 @@ inputs:
   pr_env:
     required: true
     description: 'Current Env'
+  github_token:
+    required: true
+    description: 'secrets.GITHUB_TOKEN'
 runs:
   using: 'composite'
   steps:
@@ -35,9 +38,9 @@ runs:
       if: github.event_name == 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-        PR_ENV: '${{ inputs.pr_env }}'
+        PR_ENV: ${{ inputs.pr_env }}
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ inputs.github_token }}
         script: |
           const output = `### Terraform ${process.env.PR_PLAN}
           #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
