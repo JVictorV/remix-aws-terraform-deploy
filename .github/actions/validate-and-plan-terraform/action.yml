@@ -3,34 +3,41 @@ description: 'Boilerplate to run the validate and plan commands for terraform, f
 inputs:
   pr_env:
     required: true
+    description: 'Current Env'
 runs:
   using: 'composite'
   steps:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+      shell: bash
 
     - name: Terraform Format
       id: fmt
       run: terraform fmt -check
+      shell: bash
 
     - name: Terraform Init
       id: init
       run: terraform init
+      shell: bash
 
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
+      shell: bash
 
     - name: Terraform Plan
       id: plan
       if: github.event_name == 'pull_request'
       run: terraform plan -no-color
+      shell: bash
 
     - uses: actions/github-script@0.9.0
       if: github.event_name == 'pull_request'
       env:
         PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         PR_ENV: '${{ inputs.pr_env }}'
+      shell: bash
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -60,3 +67,4 @@ runs:
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
       run: exit 1
+      shell: bash
