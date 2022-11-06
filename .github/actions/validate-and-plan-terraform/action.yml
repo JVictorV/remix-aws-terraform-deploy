@@ -1,0 +1,79 @@
+name: 'Plan and Validate Terraform'
+description: 'Boilerplate to run the validate and plan commands for terraform, following the recommended guidelines'
+inputs:
+  pr_env:
+    required: true
+    description: 'Current Env'
+  github_token:
+    required: true
+    description: 'secrets.GITHUB_TOKEN'
+  dir:
+    required: true
+    description: 'dir path relative to project root'
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Terraform
+      working-directory: ${{ inputs.dir }}
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Terraform Format
+      working-directory: ${{ inputs.dir }}
+      id: fmt
+      run: terraform fmt -check
+      shell: bash
+
+    - name: Terraform Init
+      working-directory: ${{ inputs.dir }}
+      id: init
+      run: terraform init
+      shell: bash
+
+    - name: Terraform Validate
+      working-directory: ${{ inputs.dir }}
+      id: validate
+      run: terraform validate -no-color
+      shell: bash
+
+    - name: Terraform Plan
+      working-directory: ${{ inputs.dir }}
+      id: plan
+      if: github.event_name == 'pull_request'
+      run: terraform plan -no-color
+      shell: bash
+
+    - uses: actions/github-script@0.9.0
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        PR_ENV: ${{ inputs.pr_env }}
+      with:
+        github-token: ${{ inputs.github_token }}
+        script: |
+          const output = `### Terraform ${process.env.PR_PLAN}
+          #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+
+    - name: Terraform Plan Status
+      shell: bash
+      if: steps.plan.outcome == 'failure'
+      run: exit 1
